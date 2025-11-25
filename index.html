@@ -1,38 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <!--<base href="/">-->
-  <base href="./">
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="express">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>express</title>
-  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<title>اتصال سريع</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {background:#f0f0f0;font-family:Tahoma, sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;}
+.box {background:#fff;padding:20px;border-radius:12px;width:320px;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+input {width:100%;padding:10px;font-size:18px;border-radius:8px;border:1px solid #ccc;direction:ltr;}
+.btns {margin-top:15px;display:flex;gap:10px;}
+button {flex:1;padding:12px;font-size:16px;border:none;border-radius:8px;color:#fff;cursor:pointer;}
+#wh {background:#25D366;} #call {background:#0A84FF;}
+</style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<div class="box">
+  <h3 style="text-align:center;margin-top:0;">اتصال سريع</h3>
+  <input id="num" placeholder="أدخل رقم الهاتف">
+  <div class="btns">
+    <button id="wh">واتساب</button>
+    <button id="call">اتصال</button>
+  </div>
+</div>
+<script>
+function fixNum(n){
+  if(!n) return "";
+  return n.replace(/[\u0660-\u0669]/g,d=>d.charCodeAt(0)-1632)
+          .replace(/[\u06F0-\u06F9]/g,d=>d.charCodeAt(0)-1776)
+          .replace(/[^0-9+]/g,"");
+}
+function full(n){
+  n = fixNum(n);
+  if(n.startsWith("+")) return n;
+  if(n.startsWith("0")) return "+964"+n.slice(1);
+  return "+964"+n;
+}
+document.getElementById("wh").onclick = ()=>{let n = full(document.getElementById("num").value);if(n) window.location.href = "https://wa.me/"+n.replace("+","");};
+document.getElementById("call").onclick = ()=>{let n = full(document.getElementById("num").value);if(n) window.location.href = "tel:"+n;};
+document.getElementById("num").oninput = ()=>{let f = fixNum(document.getElementById("num").value);document.getElementById("num").value = f;};
+</script>
 </body>
 </html>
